@@ -3,12 +3,24 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Add comment
+name: Label and Comment on issues
 on:
   issues:
     types:
       - labeled
+      - reopened
+      - opened
 jobs:
+  label_issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Label issues
+        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+        with:
+          add-labels: "triage"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
   add-comment:
     if: github.event.label.name == 'bug'
     runs-on: ubuntu-latest
